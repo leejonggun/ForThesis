@@ -3,8 +3,9 @@
    This script is for connect() fault
    run etimedout_client.sh
    */
-Import("posix.socket");
-Import("cstyle");
+import("posix.socket");
+import("posix.process");
+import("cstyle");
 
 void test() {
 //	destination
@@ -21,16 +22,20 @@ void test() {
 	String msg = "Hello world!\n";
 	System.p(msg);
 	int i = 0;
-	while (i < 10000000) {
-		if (i == 9999999) {
-//	rebind System.sendto() function
-//	It's possible to use write, read function.
-			ret = System.write(sockfd, msg);
-//			ret = System.send(sockfd, msg, 0);
-			System.p(ret);
-			System.p("Sent a message to the server");
+	while (true) {
+		if(i == 10) {
+			System.close(sockfd);
+			sockfd = System.socket(dstFamily, dstType, dstOPT);
+			ret = System.connect(sockfd, dstIP, dstPort, dstFamily);
 			i = 0;
 		}
+//	rebind System.sendto() function
+//	It's possible to use write, read function.
+		ret = System.write(sockfd, msg);
+//		ret = System.send(sockfd, msg, 0);
+		System.p(ret);
+		System.p("Sent a message to the server");
+		System.sleep(1);
 		i = i + 1;
 	}
 	System.close(sockfd);

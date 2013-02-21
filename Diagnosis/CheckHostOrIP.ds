@@ -9,6 +9,9 @@ Import("MiniKonoha.Map");
 boolean CheckGiven(String[] given_host, String hostsfile) {
 	int i = 0 , j = 0;
 	String tmpIP = given_host.get(0);
+	if (tmpIP == "") {
+		return false;
+	}
 	Map[String] check_map = new Map[String]();
 
 //Add user-add hostname from /etc/hosts

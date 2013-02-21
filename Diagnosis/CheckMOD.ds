@@ -19,6 +19,9 @@ boolean CheckMOD(Json ctx) {
 	};
 
 	String bus_number = NIC.split(" ").get(0).trim();
+	if (bus_number == "") {
+		return false;
+	}
 	Kernel_Driver = $(/usr/bin/lspci -v -s "${bus_number}" | grep "${Kernel_Driver}");
 	if (Kernel_Driver == "") {
 //	ドライバがロードされていない

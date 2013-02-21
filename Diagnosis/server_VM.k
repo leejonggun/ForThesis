@@ -4,20 +4,16 @@
    run etimedout_client.sh
    */
 Import("posix.socket");
+Import("cstyle");
 
 void test() {
 //	destination
-	String srcIP = "192.168.122.179";
+	String srcIP = "192.168.59.75";
 	System.p(srcIP);
 	int srcPort = 10001;
 	int srcFamily = AF_INET;
 	int srcType = SOCK_STREAM;
 	int srcOPT = 0;
-
-	int dstPort = 10002;
-	int dstFamily = AF_INET;
-	int dstType = SOCK_STREAM;
-	int dstOPT = 0;
 
 	SockAddr remoteInfo = new SockAddr();
 
@@ -31,12 +27,14 @@ void test() {
 //	socket listen(System.listen())
 	ret = System.listen(sockfd, SOMAXCONN);
 
+	int accpetfd = 0;
 	while (true) {
 		System.p("Preparing to accept...");
-		ret = System.accept(sockfd, remoteInfo);
+		acceptfd = System.accept(sockfd, remoteInfo);
 
 //		ret = System.recv(sockfd, msgfrom, 0);
-		ret = System.read(sockfd, msgfrom);
+//		ret = System.read(sockfd);//error
+		ret = System.read(acceptfd);
 		System.p(ret);
 	}
 	System.close(sockfd);

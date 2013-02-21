@@ -9,7 +9,7 @@ import("cstyle");
 
 void test() {
 //	destination
-	String dstIP = "192.168.59.76";
+	String dstIP = "192.168.59.75";
 	System.p(dstIP);
 	int dstPort = 10001;
 	int dstFamily = AF_INET;

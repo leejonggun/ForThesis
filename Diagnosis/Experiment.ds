@@ -57,7 +57,7 @@ boolean Evidences(Json ctx) {
 
 	result = $(/usr/local/bin/konoha CheckHostOrIP.ds "${host}");
 
-	if (result.search("IP Address") == -1) {
+	if (result.search("Hostname") > -1) {
 		result = $(/usr/local/bin/konoha Nslookup.ds "${host}");
 		System.p(result);
 	}

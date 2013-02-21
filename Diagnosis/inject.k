@@ -42,13 +42,13 @@ $(sudo iptables -F);
 //$(sudo iptables -P INPUT DROP);
 //$(sudo iptables -P OUTPUT DROP);
 //$(sudo iptables -P FORWARD DROP);
-//$(sudo iptables -A INPUT -s 192.168.59.40 -j ACCEPT);
-//$(sudo iptables -A OUTPUT -s 192.168.59.40 -j ACCEPT);
-//$(sudo iptables -A FORWARD -s 192.168.59.40 -j ACCEPT);
+//$(sudo iptables -A INPUT -s 192.168.122.179 -j ACCEPT);
+//$(sudo iptables -A OUTPUT -s 192.168.122.179 -j ACCEPT);
+//$(sudo iptables -A FORWARD -s 192.168.122.179 -j ACCEPT);
 
-//$(sudo iptables -A INPUT -s 192.168.59.40 -p tcp --dport 21 -j ACCEPT);
-//$(sudo iptables -A OUTPUT -s 192.168.59.40 -p tcp --dport 21 -j ACCEPT);
-//$(sudo iptables -A FORWARD -s 192.168.59.40 -p tcp --dport 21 -j ACCEPT);
+//$(sudo iptables -A INPUT -s 192.168.122.179 -p tcp --dport 21 -j ACCEPT);
+//$(sudo iptables -A OUTPUT -s 192.168.122.179 -p tcp --dport 21 -j ACCEPT);
+//$(sudo iptables -A FORWARD -s 192.168.122.179 -p tcp --dport 21 -j ACCEPT);
 
 //$(sudo iptables -A INPUT -p tcp --dport 21 -j ACCEPT);
 //$(sudo iptables -A OUTPUT -p tcp --dport 21 -j ACCEPT);
@@ -69,8 +69,8 @@ $(sudo iptables -F);
 //$(sudo iptables -A OUTPUT -p tcp --dport 21 -j DROP);//Connect timed out
 //$(sudo iptables -A OUTPUT -p tcp --sport 21 -j DROP);//Doesn't matter
 //	//fault DROP INPUT ftp-control packets to 192.168.59.77
-//$(sudo iptables -A OUTPUT -d 192.168.59.40 -p tcp --dport 21 -j DROP);//Connect timed out
-//$(sudo iptables -A OUTPUT -d 192.168.59.40 -p tcp --sport 21 -j DROP);//Doesn't matter
+//$(sudo iptables -A OUTPUT -d 192.168.122.179 -p tcp --dport 21 -j DROP);//Connect timed out
+//$(sudo iptables -A OUTPUT -d 192.168.122.179 -p tcp --sport 21 -j DROP);//Doesn't matter
 
 //	//fault ACCEPT OUTPUT ftp-control packets 2.102->2.102
 	$(sudo iptables -A OUTPUT -p tcp --sport 21 -j ACCEPT);

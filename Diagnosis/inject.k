@@ -7,7 +7,7 @@ void fault () {
 	//restore
 //	sudo modprobe wl; sudo modprobe atl1c;
 	//fault
-//	sudo modprobe -r wl; sudo modprobe -r atl1c;
+	sudo modprobe -r wl; sudo modprobe -r atl1c;
 
 /*rewrite /etc/resov.conf*/
 	//restore
@@ -46,35 +46,35 @@ $(sudo iptables -F);
 //$(sudo iptables -A OUTPUT -s 192.168.122.179 -j ACCEPT);
 //$(sudo iptables -A FORWARD -s 192.168.122.179 -j ACCEPT);
 
-//$(sudo iptables -A INPUT -s 192.168.122.179 -p tcp --dport 21 -j ACCEPT);
-//$(sudo iptables -A OUTPUT -s 192.168.122.179 -p tcp --dport 21 -j ACCEPT);
-//$(sudo iptables -A FORWARD -s 192.168.122.179 -p tcp --dport 21 -j ACCEPT);
+//$(sudo iptables -A INPUT -s 192.168.122.179 -p tcp --dport 10001 -j ACCEPT);
+//$(sudo iptables -A OUTPUT -s 192.168.122.179 -p tcp --dport 10001 -j ACCEPT);
+//$(sudo iptables -A FORWARD -s 192.168.122.179 -p tcp --dport 10001 -j ACCEPT);
 
-//$(sudo iptables -A INPUT -p tcp --dport 21 -j ACCEPT);
-//$(sudo iptables -A OUTPUT -p tcp --dport 21 -j ACCEPT);
-//$(sudo iptables -A FORWARD -p tcp --dport 21 -j ACCEPT);
+//$(sudo iptables -A INPUT -p tcp --dport 10001 -j ACCEPT);
+//$(sudo iptables -A OUTPUT -p tcp --dport 10001 -j ACCEPT);
+//$(sudo iptables -A FORWARD -p tcp --dport 10001 -j ACCEPT);
 
 //$(sudo iptables -A INPUT -p tcp -j ACCEPT);
 //$(sudo iptables -A OUTPUT -p tcp -j ACCEPT);
 //$(sudo iptables -A FORWARD -p tcp -j ACCEPT);
 
 //	//fault DROP INPUT ftp-control packets
-//$(sudo iptables -A INPUT -p tcp --dport 21 -j DROP);//Doesn't matter
-//$(sudo iptables -A INPUT -p tcp --sport 21 -j DROP);//Connect timed out
+//$(sudo iptables -A INPUT -p tcp --dport 10001 -j DROP);//Doesn't matter
+//$(sudo iptables -A INPUT -p tcp --sport 10001 -j DROP);//Connect timed out
 //	//fault DROP INPUT ftp-control packets from 192.168.59.77
-//$(sudo iptables -A INPUT -s 192.168.59.77 -p tcp --dport 21 -j DROP);//Doesn't matter
-//$(sudo iptables -A INPUT -s 192.168.59.77 -p tcp --sport 21 -j DROP);//Doesn't matter
+//$(sudo iptables -A INPUT -s 192.168.59.76 -p tcp --dport 10001 -j DROP);//Doesn't matter
+//$(sudo iptables -A INPUT -s 192.168.59.76 -p tcp --sport 10001 -j DROP);//Doesn't matter
 
 	//fault DROP INPUT ftp-control packets
-//$(sudo iptables -A OUTPUT -p tcp --dport 21 -j DROP);//Connect timed out
-//$(sudo iptables -A OUTPUT -p tcp --sport 21 -j DROP);//Doesn't matter
+//$(sudo iptables -A OUTPUT -p tcp --dport 10001 -j DROP);//Connect timed out
+//$(sudo iptables -A OUTPUT -p tcp --sport 10001 -j DROP);//Doesn't matter
 //	//fault DROP INPUT ftp-control packets to 192.168.59.77
-//$(sudo iptables -A OUTPUT -d 192.168.122.179 -p tcp --dport 21 -j DROP);//Connect timed out
-//$(sudo iptables -A OUTPUT -d 192.168.122.179 -p tcp --sport 21 -j DROP);//Doesn't matter
+//$(sudo iptables -A OUTPUT -d 192.168.59.76 -p tcp --dport 10001 -j DROP);//Connect timed out
+//$(sudo iptables -A OUTPUT -d 192.168.59.76 -p tcp --sport 10001 -j DROP);//Doesn't matter
 
 //	//fault ACCEPT OUTPUT ftp-control packets 2.102->2.102
-	$(sudo iptables -A OUTPUT -p tcp --sport 21 -j ACCEPT);
-	$(sudo iptables -A OUTPUT -p tcp --dport 21 -j ACCEPT);
+//	$(sudo iptables -A OUTPUT -p tcp --sport 10001 -j ACCEPT);
+//	$(sudo iptables -A OUTPUT -p tcp --dport 10001 -j ACCEPT);
 //$(sudo iptables -F);
 }
 

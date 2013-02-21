@@ -62,6 +62,18 @@ boolean Evidences(Json ctx) {
 		System.p(result);
 	}
 
+	result = $(sudo /usr/local/bin/konoha FirewallMSGInput.ds);
+	System.p(result);
+
+	result = $(sudo /usr/local/bin/konoha FirewallMSGForward.ds);
+	System.p(result);
+
+	result = $(sudo /usr/local/bin/konoha FirewallMSGOutput.ds);
+	System.p(result);
+
+//	result = $(sudo /usr/local/bin/konoha FirewallFTPInput.ds);
+//	System.p(result);
+//
 //	result = $(sudo /usr/local/bin/konoha FirewallFTPInput.ds);
 //	System.p(result);
 //
@@ -90,9 +102,9 @@ boolean Evidences(Json ctx) {
 
 void main() {
 	Json ctx = new Json();
-//	ctx.setString("hostname", SCRIPT_ARGV.get(1));
+	ctx.setString("hostname", SCRIPT_ARGV.get(1));
 //	ctx.setString("hostname", "www.google.com");
-	ctx.setString("hostname", "test");
+//	ctx.setString("hostname", "test");
 	Evidences(ctx);
 }
 

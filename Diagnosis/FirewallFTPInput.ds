@@ -15,10 +15,10 @@ boolean FirewallFTPInput(Json ctx) {
 	String ifconfig = $(echo "${setting}" | grep "DROP");
 	ifconfig = ifconfig.concat($(echo "${setting}" | grep "REJECT"));
 
-	if (ifconfig.search("21") > -1) {
+	if (ifconfig.search("10001") > -1) {
 		ret = false;
 	}
-	if (ifconfig.search("21") > -1) {
+	if (ifconfig.search("10001") > -1) {
 		ret = false;
 	}
 	return ret;

@@ -15,7 +15,7 @@ boolean FirewallFTPDataInput(Json ctx) {
 	String rules = $(echo "${setting}" | grep "ACCEPT");
 
 	if (policy.search("DROP") > -1) {
-		if (rules.search("20") == -1) {
+		if (rules.search("10001") == -1) {
 			ret = false;
 		}
 	}

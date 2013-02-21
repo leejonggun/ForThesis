@@ -1,6 +1,7 @@
 // written by Joseph
 
 import("Syntax.ShellStyle");
+import("Java.String");
 import("Type.Json");
 import("cstyle");
 
@@ -13,15 +14,11 @@ boolean Routing(Json ctx) {
 	if (gethostip == "") {
 		return false;
 		}
-	String[] getIP = gethostip.split(".");
+	String getIP = gethostip.slice(0, gethostip.lastIndexOf("."));
 
-	getIP = getIP.slice(0,3);//Network part of IP Address
 
 	String Rtable = $(/bin/netstat -rn | grep "${getIP}");
-	while (i < getIP.getlength() - 1) {
-		routable = Rtable.search(getIP.get(i));
-		i = i + 1;
-	}
+	routable = Rtable.search(getIP);
 	if (routable > 0) {
 		return true;
 	} else {

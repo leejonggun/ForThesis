@@ -14,7 +14,7 @@
 
  - (Experiment.ds:35)  - (FirewallIPForward.ds:29) true
 
- - (Experiment.ds:38)  - (FirewallIPOutput.ds:31) true
+ - (Experiment.ds:38)  - (FirewallIPOutput.ds:31) false
 
  - (Experiment.ds:41)  - (FirewallPolicyInput.ds:24) true
 
@@ -26,21 +26,11 @@
 
  - (Experiment.ds:53)  - (FirewallTCPForward.ds:31) true
 
- - (Experiment.ds:56)  - (FirewallTCPOutput.ds:31) true
+ - (Experiment.ds:56)  - (FirewallTCPOutput.ds:31) false
 
- - (Experiment.ds:62)  - (Nslookup.ds:42) true
+ - (Experiment.ds:66)  - (error)  failed to load script: FirewallMSGInput.ds
 
- - (Experiment.ds:66)  - (FirewallFTPInput.ds:29) true
+ - (Experiment.ds:69)  - (FirewallMSGForward.ds:29) true
 
- - (Experiment.ds:69)  - (FirewallFTPForward.ds:29) true
-
- - (Experiment.ds:72)  - (FirewallFTPOutput.ds:29) true
-
- - (Experiment.ds:75)  - (FirewallFTPDataInput.ds:28) true
-
- - (Experiment.ds:78)  - (FirewallFTPDataForward.ds:28) true
-
- - (Experiment.ds:81)  - (FirewallFTPDataOutput.ds:28) true
-
- - (Experiment.ds:84)  - (CheckAnonConf.ds:26) true
+ - (Experiment.ds:72)  - (FirewallMSGOutput.ds:29) false
 

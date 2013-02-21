@@ -7,7 +7,7 @@ void fault () {
 	//restore
 //	sudo modprobe wl; sudo modprobe atl1c;
 	//fault
-	sudo modprobe -r wl; sudo modprobe -r atl1c;
+//	sudo modprobe -r wl; sudo modprobe -r atl1c;
 
 /*rewrite /etc/resov.conf*/
 	//restore
@@ -42,13 +42,13 @@ $(sudo iptables -F);
 //$(sudo iptables -P INPUT DROP);
 //$(sudo iptables -P OUTPUT DROP);
 //$(sudo iptables -P FORWARD DROP);
-//$(sudo iptables -A INPUT -s 192.168.122.179 -j ACCEPT);
-//$(sudo iptables -A OUTPUT -s 192.168.122.179 -j ACCEPT);
-//$(sudo iptables -A FORWARD -s 192.168.122.179 -j ACCEPT);
+//$(sudo iptables -A INPUT -s 192.168.59.76 -j ACCEPT);
+//$(sudo iptables -A OUTPUT -s 192.168.59.76 -j ACCEPT);
+//$(sudo iptables -A FORWARD -s 192.168.59.76 -j ACCEPT);
 
-//$(sudo iptables -A INPUT -s 192.168.122.179 -p tcp --dport 10001 -j ACCEPT);
-//$(sudo iptables -A OUTPUT -s 192.168.122.179 -p tcp --dport 10001 -j ACCEPT);
-//$(sudo iptables -A FORWARD -s 192.168.122.179 -p tcp --dport 10001 -j ACCEPT);
+//$(sudo iptables -A INPUT -s 192.168.59.76 -p tcp --dport 10001 -j ACCEPT);
+//$(sudo iptables -A OUTPUT -s 192.168.59.76 -p tcp --dport 10001 -j ACCEPT);
+//$(sudo iptables -A FORWARD -s 192.168.59.76 -p tcp --dport 10001 -j ACCEPT);
 
 //$(sudo iptables -A INPUT -p tcp --dport 10001 -j ACCEPT);
 //$(sudo iptables -A OUTPUT -p tcp --dport 10001 -j ACCEPT);
@@ -75,7 +75,6 @@ $(sudo iptables -F);
 //	//fault ACCEPT OUTPUT ftp-control packets 2.102->2.102
 //	$(sudo iptables -A OUTPUT -p tcp --sport 10001 -j ACCEPT);
 //	$(sudo iptables -A OUTPUT -p tcp --dport 10001 -j ACCEPT);
-//$(sudo iptables -F);
 }
 
 fault();

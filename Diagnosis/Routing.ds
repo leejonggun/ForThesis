@@ -16,13 +16,13 @@ boolean Routing(Json ctx) {
 		}
 	String getIP = gethostip.slice(0, gethostip.lastIndexOf("."));
 
-
 	String Rtable = $(/bin/netstat -rn | grep "${getIP}");
 	routable = Rtable.search(getIP);
-	if (routable > 0) {
+	if (routable >= 0) {
 		return true;
 	} else {
 		//If default gw is set, the packets can be routed.
+		Rtable = $(/bin/netstat -rn | grep "UG");
 		if (Rtable.search("UG") > -1) {
 			return true;
 		}

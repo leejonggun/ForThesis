@@ -2,21 +2,53 @@
 
 import("Syntax.ShellStyle");
 import("Type.Json");
+import("cstyle");
+
+String[] Get_interfaceNipaddress() {
+	int i = 0;
+	String[] ifconfig;
+	String valid_iface;
+	String[] ifconfigs = $(/sbin/ifconfig).split("\n\n");
+
+	while (i < ifconfigs.getLength() - 1) {
+		ifconfig = ifconfigs[i].split(" ");
+		if (ifconfig[7].split(":").get(0) == "addr") {//addr:192.168.59.80 or others
+			valid_iface = valid_iface.concat(" "+ifconfig[0]+" ");//interface name
+			valid_iface = valid_iface.concat(ifconfig[7].split(":").get(1));//IP Address
+		}
+		i = i + 1;
+	}
+
+	return valid_iface.split(" ");
+}
+
+boolean Match_correct_iface(String[] iface_ip) {
+	int i = 0;
+	String netstatus;
+
+	while (i < iface_ip.getLength()){
+//check whether network cable is connected or not = network interface is working or not
+		String network = iface_ip[i+1].slice(0, iface_ip[i+1].lastIndexOf("."));
+		netstatus = $(/bin/netstat -rn | grep "${network}");
+//		System.p(netstatus);
+		if (netstatus == "") {
+			return false;
+		} else if (netstatus.search(iface_ip[i]) == -1) {
+			return false;
+		}
+		i = i + 2;
+	}
+	return true;
+}
 
 boolean Connection(Json ctx) {
 	boolean ret = true;
 
-//check whether network cable is connected or not = network interface is working or not
-	String netstatus = $(/bin/netstat -rn);
-	if (netstatus == "") {
-		return false;
-	}
-	int iface = netstatus.search("eth");
-//	iface = iface + netstatus.search("wlan");
-	if (iface < 0) {
-//		System.p("SystemFault:Iface is not working.");
-		return false;
-	};
+	String[] iface_ip = Get_interfaceNipaddress();
+//	System.p(iface_ip);
+
+	ret = Match_correct_iface(iface_ip);
+
 	return ret;
 }
 

@@ -5,21 +5,23 @@ import("Type.Json");
 
 boolean FirewallIPOutput(Json ctx) {
 	boolean ret = true;
+	String given_host = ctx.getString("hostname");
 
 //get iptables setting
 	String setting = $(sudo iptables -L -n);
 	if (setting == "") {
 		return false;
 	}
+
+	String server = $(/usr/bin/gethostip "${given_host}" -d).trim();//can connect directly.
+
 	setting = setting.substring(setting.search("OUTPUT"), setting.getlength());
 	String ifconfig = $(echo "${setting}" | grep "DROP");
 	ifconfig = ifconfig.concat($(echo "${setting}" | grep "REJECT"));
 
-	if (ifconfig.search("192.168.59.76") > -1) {
-//		System.p("SystemFault:OUTPUT packet is dropped.");
+	if (ifconfig.search(server) > -1) {
 		ret = false;
-	} else if (ifconfig.search("192.168.59.76") > -1) {
-//		System.p("SystemFault:OUTPUT packet is rejected.");
+	} else if (ifconfig.search(server) > -1) {
 		ret = false;
 	}
 
@@ -28,6 +30,7 @@ boolean FirewallIPOutput(Json ctx) {
 
 void main() {
 	Json ctx = new Json();
+	ctx.setString("hostname", SCRIPT_ARGV.get(1));
 	System.p(FirewallIPOutput(ctx));
 }
 

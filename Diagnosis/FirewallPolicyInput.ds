@@ -1,21 +1,122 @@
 // written by Joseph
 
+import("MiniKonoha.Map");
 import("Syntax.ShellStyle");
 import("Type.Json");
 import("cstyle");
 
-String Get_NetworkPart(String host) {
+String Get_ipaddress() {
+	int i = 0;
+	String[] ifconfig;
+	String ip;
+	String[] ifconfigs = $(/sbin/ifconfig).split("\n\n");
+
+	ifconfig = ifconfigs[i].split(" ");
+	while (i < ifconfigs.getLength() - 1) {
+		ifconfig = ifconfigs[i].split(" ");
+		if (ifconfig[7].split(":").get(0) == "addr") {//addr:192.168.59.80 or others
+			ip = ifconfig[7].split(":").get(1);//IP Address
+			if (ip != "") {//You get the IP Address, then escape this loop
+				return ip;
+			}
+		}
+		i = i + 1;
+	}
+
+	return ip;
+}
+
+String[] Format_rules(String rules) {
+	String[] rule = rules.split("\n");
+	int i = 0;
+	while (i < rule.getLength() - 1) {
+		String[] con = rule[i].split(" ");
+		if (con.getLength() == 7) {
+			con = con.slice(0, 5);
+		}
+		i = i + 1;
+	}
+
+}
+
+boolean Check_Detail(Json ctx, String rules) {
+	int i;
+	String IP = Get_ipaddress();
+	String host = ctx.getString("hostname");
+	String[] src = [IP, "0.0.0.0/0"];
+	String[] dest = [host, "0.0.0.0/0"];
+	Map[String] src_list = new Map[String]();
+	Map[String] dest_list = new Map[String]();
+	//Mapping
+	i = 0;
+	while (i < src.getSize()) {
+		src_list.set(src[i], src[i]);
+		i = i + 1;
+	}
+	i = 0;
+	while (i < dest.getSize()) {
+		dest_list.set(dest[i], dest[i]);
+		i = i + 1;
+	}
+
+	String[] rule = Format_rules(rules);
+//	i = 0;
+//	while (i < rule.getLength() - 1) {
+//		String[] con = rule[i].split(" ");
+//		System.p(con);
+//		con[6] = con[6].split(":").get(0);
+//con:(0)target, (1)prot, (2)opt, (3)source, (4)destination (5)tcp,udp (6)spt:10001 or dpt:10001
+//		ret = (con[0] == "ACCEPT");	if (ret == false) {return false;};
+//		ret = (con[1] == "tcp");		if (ret == false) {return false;};
+//		ret = (con[3]);			if (ret == false) {return anywhere.test(con.get(4));}
+//		ret = (con[4]);		if (ret == false) {return anywhere.test(con.get(5));}
+//		ret = (con[6] == "spt");	if (ret == false) {return con[6] == "dpt";}
+//		System.p(ret);
+//		i = i + 1;
+//	}
+
+	return true;
+}
+
+boolean Check_Rules(Json ctx, String rules) {
+	String rule = rules;
+	String concat;
+	String srcPort = ctx.getString("Service_srcPort");
+	String destPort = ctx.getString("Service_destPort");
+
+	if (rules.search(srcPort) > -1) {//Service name is 10001
+		if (rules.search(destPort) == -1) {//Service name is 10001
+			return false;
+		}
+		rule = $(echo "${rules}" | grep "${srcPort}");
+		concat = $(echo "${rules}" | grep "${destPort}");
+		rule = rule.concat(concat);
+	} else if (rules.search(destPort) > -1) {//Service name is 10001
+		if (rules.search(srcPort ) == -1) {//Service name is 10001
+			return false;
+		}
+		rule = $(echo "${rules}" | grep "${srcPort}");
+		concat = $(echo "${rules}" | grep "${destPort}");
+		rule = rule.concat(concat);
+		System.p(rule);
+	}
+
+	return Check_Detail(ctx, rule);
+}
+
+String Get_ServerIP(String host) {
 	String gethostip = $(/usr/bin/gethostip "${host}" -d).trim();//can connect directly.
 	if (gethostip == "") {
 		return gethostip;
 	}
-	return gethostip.slice(0, gethostip.lastIndexOf("."));
+	return gethostip;
 }
 
 boolean FirewallPolicyInput(Json ctx) {
-	boolean ret = true;
-	String IP_Network = Get_NetworkPart(ctx.getString("hostname"));
-	if (IP_Network == "") {
+	int i;
+	String ServerIP = Get_ServerIP(ctx.getString("hostname"));
+	ctx.setString("hostname", ServerIP);
+	if (ServerIP == "") {
 		return false;
 	}
 
@@ -24,29 +125,25 @@ boolean FirewallPolicyInput(Json ctx) {
 		return false;
 	}
 
-	setting = setting.substring(0, setting.search("\n\n"));//Chain INPUT
+//Get POLICY & firewall rules
+	setting = setting.substring(setting.indexOf("INPUT"), setting.indexOf("\n\n"));//Chain INPUT
 	String policy = setting.substring(0, setting.indexOf("\n"));
 	String rules = setting.substring(setting.indexOf("\n"), setting.getLength());
-	rules = $(echo "${rules}" | grep "ACCEPT");
 
 	if (policy.search("DROP") > -1) {
-		ret = false;
-		if (rules.search(IP_Network) > -1) {
-			ret = true;
-		}
-	} else if (setting.search("REJECT") > -1) {
-		ret = false;
-		if (rules.search(IP_Network) > -1) {
-			ret = true;
-		}
+		return Check_Rules(ctx, rules);
+	} else if (policy.search("REJECT") > -1) {
+		return Check_Rules(ctx, rules);
 	}
 
-	return ret;
+	return true;
 }
 
 void main() {
 	Json ctx = new Json();
-	ctx.setString("hostname", "test");
+	ctx.setString("hostname", SCRIPT_ARGV.get(1));
+	ctx.setString("Service_srcPort", "spt:10001");//Service name is 10001
+	ctx.setString("Service_destPort", "dpt:10001");//Service name is 10001
 	System.p(FirewallPolicyInput(ctx));
 }
 

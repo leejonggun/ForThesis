@@ -2,18 +2,43 @@
 
 import("Syntax.ShellStyle");
 import("Type.Json");
+import("cstyle");
 
-boolean FirewallPolicyForward(Json ctx) {
+String Get_NetworkPart(String host) {
+	String gethostip = $(/usr/bin/gethostip "${host}" -d).trim();//can connect directly.
+	if (gethostip == "") {
+		return gethostip;
+	}
+	return gethostip.slice(0, gethostip.lastIndexOf("."));
+}
+
+boolean FirewallPolicyInput(Json ctx) {
 	boolean ret = true;
-
-	String ifconfig = $(sudo iptables -L | grep "FORWARD");
-	if (ifconfig == "") {
+	String IP_Network = Get_NetworkPart(ctx.getString("hostname"));
+	if (IP_Network == "") {
 		return false;
 	}
-	if (ifconfig.search("DROP") > -1) {
+
+	String setting = $(sudo iptables -L -n);
+	if (setting == "") {
+		return false;
+	}
+
+	setting = setting.substring(setting.indexOf("FORWARD"), setting.lastIndexOf("\n\n"));//Chain FORWARD
+	String policy = setting.substring(0, setting.indexOf("\n"));
+	String rules = setting.substring(setting.indexOf("\n"), setting.getLength());
+	rules = $(echo "${rules}" | grep "ACCEPT");
+
+	if (policy.search("DROP") > -1) {
 		ret = false;
-	} else if (ifconfig.search("REJECT") > -1) {
+		if (rules.search(IP_Network) > -1) {
+			ret = true;
+		}
+	} else if (setting.search("REJECT") > -1) {
 		ret = false;
+		if (rules.search(IP_Network) > -1) {
+			ret = true;
+		}
 	}
 
 	return ret;
@@ -21,7 +46,8 @@ boolean FirewallPolicyForward(Json ctx) {
 
 void main() {
 	Json ctx = new Json();
-	System.p(FirewallPolicyForward(ctx));
+	ctx.setString("hostname", "test");
+	System.p(FirewallPolicyInput(ctx));
 }
 
 main();

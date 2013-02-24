@@ -28,13 +28,13 @@ boolean Evidences(Json ctx) {
 //	result = $(/usr/local/bin/konoha RecognitionGW.ds);
 //	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallIPInput.ds);
+	result = $(sudo /usr/local/bin/konoha FirewallIPInput.ds "${host}");
 	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallIPForward.ds);
+	result = $(sudo /usr/local/bin/konoha FirewallIPForward.ds "${host}");
 	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallIPOutput.ds);
+	result = $(sudo /usr/local/bin/konoha FirewallIPOutput.ds "${host}");
 	System.p(result);
 
 	result = $(sudo /usr/local/bin/konoha FirewallPolicyInput.ds);

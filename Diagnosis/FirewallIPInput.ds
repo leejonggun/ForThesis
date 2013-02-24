@@ -5,19 +5,23 @@ import("Type.Json");
 
 boolean FirewallIPInput(Json ctx) {
 	boolean ret = true;
+	String given_host = ctx.getString("hostname");
 
 //get iptables setting
 	String setting = $(sudo iptables -L -n);
 	if (setting == "") {
 		return false;
 	}
+
+	String server = $(/usr/bin/gethostip "${given_host}" -d).trim();//can connect directly.
+
 	setting = setting.substring(setting.search("INPUT"), setting.search("FORWARD"));
 	String ifconfig = $(echo "${setting}" | grep "DROP");
 	ifconfig = ifconfig.concat($(echo "${setting}" | grep "REJECT"));
 
-	if (ifconfig.search("192.168.59.76") > -1) {
+	if (ifconfig.search(server) > -1) {
 		ret = false;
-	} else if (ifconfig.search("192.168.59.76") > -1) {
+	} else if (ifconfig.search(server) > -1) {
 		ret = false;
 	}
 
@@ -26,6 +30,7 @@ boolean FirewallIPInput(Json ctx) {
 
 void main() {
 	Json ctx = new Json();
+	ctx.setString("hostname", SCRIPT_ARGV.get(1));
 	System.p(FirewallIPInput(ctx));
 }
 

@@ -367,63 +367,68 @@ function createSampleNode() {
 					{ name: "D-Script", type: "DScript", desc: "Nslookup.ds" }
 									]
 				},
-				{ name: "SubGoal 5.2", type: "Goal", desc: "ファイル転送(FTP)が可能である" ,
+				{ name: "SubGoal 5.2", type: "Goal", desc: "DHCPサービスは利用可能" ,
+				children: [
+					{ name: "D-Script", type: "DScript", desc: "DHCP.ds" }
+									]
+				},
+				{ name: "SubGoal 5.3", type: "Goal", desc: "メッセージ送信が可能である" ,
 				children: [
 						{ name: "Strategy", type: "Strategy", desc: "コントロールコネクション接続可否について議論" ,
 						children: [
-							{ name: "SubGoal 5.2.1.1", type: "Goal", desc: "firewallによりポート21番のFORWARDパケットを破棄していない" ,
+							{ name: "SubGoal 5.3.1", type: "Goal", desc: "firewallによりポート21番のFORWARDパケットを破棄していない" ,
 							children: [
 								{ name: "D-Script", type: "DScript", desc: "FirewallFTPForward.ds" },
 												]
 							},
-							{ name: "SubGoal 5.2.1.1", type: "Goal", desc: "firewallによりポート21番のOUTPUTパケットを破棄していない" ,
+							{ name: "SubGoal 5.3.2", type: "Goal", desc: "firewallによりポート21番のOUTPUTパケットを破棄していない" ,
 							children: [
 								{ name: "D-Script", type: "DScript", desc: "FirewallFTPOutput.ds" },
 												]
 							},
-							{ name: "SubGoal 5.2.1.2", type: "Goal", desc: "firewallによりポート21番のINPUTパケットを破棄していない" ,
+							{ name: "SubGoal 5.3.3", type: "Goal", desc: "firewallによりポート21番のINPUTパケットを破棄していない" ,
 							children: [
 								{ name: "D-Script", type: "DScript", desc: "FirewallFTPInput.ds" },
 												]
 							},
-							{ name: "SubGoal 5.2.1.3", type: "Goal", desc: "ユーザ名、パスワード名が間違っていない" ,
-							children: [
-								{ name: "Evidence", type: "Evidence", desc: "ユーザの確認結果" },
-												]
-							}
-											]
-						},
-						{ name: "Strategy", type: "Strategy", desc: "データコネクションについて議論" ,
-						children: [
-							{ name: "SubGoal 5.2.1.1", type: "Goal", desc: "firewallによりデータ転送に使用するポートのOUTPUTパケットを破棄していない" ,
-							children: [
-								{ name: "D-Script", type: "DScript", desc: "FirewallFTPDataOutput.ds" },
-												]
-							},
-							{ name: "SubGoal 5.2.1.1", type: "Goal", desc: "firewallによりデータ転送に使用するポートのFORWARDパケットを破棄していない" ,
-							children: [
-								{ name: "D-Script", type: "DScript", desc: "FirewallFTPDataForward.ds" },
-												]
-							},
-							{ name: "SubGoal 5.2.1.2", type: "Goal", desc: "firewallによりデータ転送に使用するポートのINPUTパケットを破棄していない" ,
-							children: [
-								{ name: "D-Script", type: "DScript", desc: "FirewallFTPDataInput.ds" },
-												]
-							},
-											]
-						},
-						{ name: "Strategy", type: "Strategy", desc: "FTP設定ファイルを考慮する" ,
-						children: [
-							{ name: "SubGoal 5.2.2.1", type: "Goal", desc: "匿名で接続できる設定になっている" ,
-							children: [
-								{ name: "D-Script", type: "DScript", desc: "CheckAnonConf.ds" },
-												]
-							},
-							{ name: "SubGoal 5.2.2.1", type: "Goal", desc: "匿名のためのルートディレクトリが設定されている" ,
-							children: [
-								{ name: "D-Script", type: "DScript", desc: "CheckRootConf.ds" },
-												]
-							}
+//							{ name: "SubGoal 5.2.1.3", type: "Goal", desc: "ユーザ名、パスワード名が間違っていない" ,
+//							children: [
+//								{ name: "Evidence", type: "Evidence", desc: "ユーザの確認結果" },
+//												]
+//							}
+//											]
+//						},
+//						{ name: "Strategy", type: "Strategy", desc: "データコネクションについて議論" ,
+//						children: [
+//							{ name: "SubGoal 5.2.1.1", type: "Goal", desc: "firewallによりデータ転送に使用するポートのOUTPUTパケットを破棄していない" ,
+//							children: [
+//								{ name: "D-Script", type: "DScript", desc: "FirewallFTPDataOutput.ds" },
+//												]
+//							},
+//							{ name: "SubGoal 5.2.1.1", type: "Goal", desc: "firewallによりデータ転送に使用するポートのFORWARDパケットを破棄していない" ,
+//							children: [
+//								{ name: "D-Script", type: "DScript", desc: "FirewallFTPDataForward.ds" },
+//												]
+//							},
+//							{ name: "SubGoal 5.2.1.2", type: "Goal", desc: "firewallによりデータ転送に使用するポートのINPUTパケットを破棄していない" ,
+//							children: [
+//								{ name: "D-Script", type: "DScript", desc: "FirewallFTPDataInput.ds" },
+//												]
+//							},
+//											]
+//						},
+//						{ name: "Strategy", type: "Strategy", desc: "FTP設定ファイルを考慮する" ,
+//						children: [
+//							{ name: "SubGoal 5.2.2.1", type: "Goal", desc: "匿名で接続できる設定になっている" ,
+//							children: [
+//								{ name: "D-Script", type: "DScript", desc: "CheckAnonConf.ds" },
+//												]
+//							},
+//							{ name: "SubGoal 5.2.2.1", type: "Goal", desc: "匿名のためのルートディレクトリが設定されている" ,
+//							children: [
+//								{ name: "D-Script", type: "DScript", desc: "CheckRootConf.ds" },
+//												]
+//							}
 											]
 						}
 									]

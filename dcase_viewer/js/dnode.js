@@ -228,7 +228,7 @@ function createSampleNode() {
 //							]
 //		},
 
-		{ name: "SubGoal 2", type: "Goal", desc: "データリンク層は正常である",
+		{ name: "SubGoal 2", type: "Goal", desc: "ネットワークインターフェース層は障害要因ではない",
 		children: [
 					{ name: "Strategy", type: "Strategy", desc: "PCの構成状況により議論する" ,
 					children: [
@@ -477,10 +477,9 @@ function createSampleNode() {
 		desc: "通信可能である",
 		children: [
 			{ name: "Context", type: "Context", desc: "@IP:192.168.59.75\n@OS:ubuntu12.04LTS 64bit\n"+
-			  "@Service:FTPConnection\n@Type:Passive Mode\n@Topology:star\n@DEST:test\n@DEST-IP:192.168.59.40\n@OS:ubuntu12.10 64bit"
+			  "@Service:Connection\n@Topology:star\n@DEST:test\n@DEST-IP:192.168.59.40\n@OS:ubuntu12.10 64bit"
 			},
-//			{ name: "Strategy", type: "Strategy", desc: "構成機器により分割",
-			{ name: "Strategy", type: "Strategy", desc: "レイヤーレベルで議論",
+			{ name: "Strategy", type: "Strategy", desc: "TCP/IP参照モデルを基に議論する",
 //				children: [
 //				{ name: "SubGoal", type: "Goal", desc: "サーバは障害要因ではない",
 			children: strategy_children1

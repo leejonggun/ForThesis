@@ -7,7 +7,7 @@ boolean FirewallPortOutput(Json ctx) {
 	boolean ret = true;
 
 //get iptables setting
-	String setting = $(sudo iptables -L);
+	String setting = $(sudo iptables -L -n);
 	if (setting == "") {
 		return false;
 	}

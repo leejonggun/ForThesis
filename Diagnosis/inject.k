@@ -33,15 +33,15 @@ void fault () {
 
 /*iptables fault*/
 	//restore
-//$(sudo iptables -P INPUT ACCEPT);
-//$(sudo iptables -P OUTPUT ACCEPT);
-//$(sudo iptables -P FORWARD ACCEPT);
+$(sudo iptables -P INPUT ACCEPT);
+$(sudo iptables -P OUTPUT ACCEPT);
+$(sudo iptables -P FORWARD ACCEPT);
 $(sudo iptables -F);
 
 	//fault DROP POLICY packets
-$(sudo iptables -P INPUT DROP);
-$(sudo iptables -P OUTPUT DROP);
-$(sudo iptables -P FORWARD DROP);
+//$(sudo iptables -P INPUT DROP);
+//$(sudo iptables -P OUTPUT DROP);
+//$(sudo iptables -P FORWARD DROP);
 $(sudo iptables -A INPUT -s 192.168.59.40 -d 192.168.59.80 -p tcp --sport 10001 -j ACCEPT);
 $(sudo iptables -A INPUT -s 192.168.59.40 -d 192.168.59.80 -p tcp --dport 10001 -j ACCEPT);
 //$(sudo iptables -A INPUT -s 192.168.59.40 -d 192.168.59.80 -p tcp -j ACCEPT);

@@ -37,13 +37,13 @@ boolean Evidences(Json ctx) {
 	result = $(sudo /usr/local/bin/konoha FirewallIPOutput.ds "${host}");
 	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallPolicyInput.ds);
+	result = $(sudo /usr/local/bin/konoha FirewallPolicyInput.ds "${host}");
 	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallPolicyForward.ds);
+	result = $(sudo /usr/local/bin/konoha FirewallPolicyForward.ds "${host}");
 	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallPolicyOutput.ds);
+	result = $(sudo /usr/local/bin/konoha FirewallPolicyOutput.ds "${host}");
 	System.p(result);
 
 	result = $(sudo /usr/local/bin/konoha FirewallTCPInput.ds);

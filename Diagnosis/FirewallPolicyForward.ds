@@ -104,9 +104,6 @@ boolean FirewallPolicyInput(Json ctx) {
 	int i;
 	String ServerIP = Get_ServerIP(ctx.getString("hostname"));
 	ctx.setString("hostname", ServerIP);
-	if (ServerIP == "") {
-		return false;
-	}
 
 	String setting = $(sudo iptables -L -n);
 	if (setting == "") {

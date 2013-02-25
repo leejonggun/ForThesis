@@ -31,8 +31,8 @@ boolean Evidences(Json ctx) {
 	result = $(sudo /usr/local/bin/konoha FirewallIPInput.ds "${host}");
 	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallIPForward.ds "${host}");
-	System.p(result);
+//	result = $(sudo /usr/local/bin/konoha FirewallIPForward.ds "${host}");
+//	System.p(result);
 
 	result = $(sudo /usr/local/bin/konoha FirewallIPOutput.ds "${host}");
 	System.p(result);
@@ -40,8 +40,8 @@ boolean Evidences(Json ctx) {
 	result = $(sudo /usr/local/bin/konoha FirewallPolicyInput.ds "${host}");
 	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallPolicyForward.ds "${host}");
-	System.p(result);
+//	result = $(sudo /usr/local/bin/konoha FirewallPolicyForward.ds "${host}");
+//	System.p(result);
 
 	result = $(sudo /usr/local/bin/konoha FirewallPolicyOutput.ds "${host}");
 	System.p(result);
@@ -49,8 +49,8 @@ boolean Evidences(Json ctx) {
 	result = $(sudo /usr/local/bin/konoha FirewallTCPInput.ds);
 	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallTCPForward.ds);
-	System.p(result);
+//	result = $(sudo /usr/local/bin/konoha FirewallTCPForward.ds);
+//	System.p(result);
 
 	result = $(sudo /usr/local/bin/konoha FirewallTCPOutput.ds);
 	System.p(result);
@@ -65,8 +65,8 @@ boolean Evidences(Json ctx) {
 	result = $(sudo /usr/local/bin/konoha FirewallMSGInput.ds);
 	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallMSGForward.ds);
-	System.p(result);
+//	result = $(sudo /usr/local/bin/konoha FirewallMSGForward.ds);
+//	System.p(result);
 
 	result = $(sudo /usr/local/bin/konoha FirewallMSGOutput.ds);
 	System.p(result);

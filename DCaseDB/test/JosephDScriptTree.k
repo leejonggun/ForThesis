@@ -31,32 +31,29 @@ Context makeContext(API repo, int argumentId, Json context) {
 }
 
 void GenerateTree1(API repo) {
-	DCaseArgument argument = repo.CreateArgument("ネットワークに障害要因はない");
+	DCaseArgument argument = repo.CreateArgument("通信可能である");
 	int id = argument.argument_id;
 
 	DBNode root = repo.GetArgument(id).GetRoot();
 
 	Json json = new Json();
-	json.setString("HOST-IP","192.168.59.75");
-	json.setString("OS","ubuntu12.10");
-	json.setString("Version","3.2.0-37-generic");
-	json.setString("Structure","x86-64");
-	json.setString("FTP-Control-Port","21");
-	json.setString("FTP-Data-Port","21以外");
-	json.setString("Port","21");
-	json.setString("DEST","test");
-	json.setString("DEST-IP","192.168.59.40");
-	json.setString("OS","ubuntu12.04");
-	json.setString("Version","3.2.0-37-generic");
-	json.setString("Structure","x86-64");
-	json.setString("FTP-Control-Port","21");
-	json.setString("FTP-Data-Port","21以外");
+	json.setString("@HOST-IP","192.168.59.75");
+	json.setString("@OS","ubuntu12.10");
+	json.setString("@Version","3.2.0-37-generic");
+	json.setString("@Structure","x86-64");
+	json.setString("@Port","10001");
+	json.setString("@DEST","test");
+	json.setString("@DEST-IP","192.168.59.40");
+	json.setString("@OS","ubuntu12.04");
+	json.setString("@Version","3.2.0-37-generic");
+	json.setString("@Structure","x86-64");
+	json.setString("@Port","10001");
 	repo.AddContext(id, root.node_id, json);
 
-	Strategy s0 = makeStrategy(repo, id, "レイヤーレベルで議論する");
+	Strategy s0 = makeStrategy(repo, id, "TCP/IP参照モデルを基に議論する");
 	repo.InsertLink(id, root, s0);
 
-	Goal g1 = makeGoal(repo, id, "データリンク層に障害要因がない");
+	Goal g1 = makeGoal(repo, id, "ネットワークインターフェース層は障害要因ではない");
 	repo.InsertLink(id, s0 , g1);
 
 	Strategy s1 = makeStrategy(repo, id, "PCや周辺機器の状態により議論する");
@@ -82,7 +79,7 @@ void GenerateTree1(API repo) {
 	Evidence e1_4 = makeEvidence(repo, id, "D-Script:Connection.ds");
 	repo.InsertLink(id, g1_4, e1_4);
 
-	Goal g2 = makeGoal(repo, id, "インターネット層に障害要因がない");
+	Goal g2 = makeGoal(repo, id, "インターネット層は障害要因ではない");
 	repo.InsertLink(id, s0 , g2);
 
 	Strategy s2_1 = makeStrategy(repo, id, "インターネット層の持つ役割を基に議論する");
@@ -93,7 +90,7 @@ void GenerateTree1(API repo) {
 	Evidence e2_1 = makeEvidence(repo, id, "D-Script:CheckIPAddress.ds");
 	repo.InsertLink(id, g2_1, e2_1);
 
-	Goal g2_2 = makeGoal(repo, id, "ルーティング設定は障害要因ではない");
+	Goal g2_2 = makeGoal(repo, id, "ルーティング設定は正しくされている");
 	repo.InsertLink(id, s2_1, g2_2);
 
 	Evidence e2_2 = makeEvidence(repo, id, "D-Script:Routing.ds");
@@ -102,7 +99,7 @@ void GenerateTree1(API repo) {
 	Goal g2_3 = makeGoal(repo, id, "firewall設定によりIPレベルでパケットが破棄されない");
 	repo.InsertLink(id, s2_1, g2_3);
 
-	Strategy s2_3 = makeStrategy(repo, id, "INPUT, FORWARD, OUTPUT別に確認する");
+	Strategy s2_3 = makeStrategy(repo, id, "INPUT, OUTPUT別に確認する");
 	repo.InsertLink(id, g2_3, s2_3);
 
 	Goal g2_3_1 = makeGoal(repo, id, "INPUTチェーンでパケットを破棄していない");
@@ -110,10 +107,10 @@ void GenerateTree1(API repo) {
 	Evidence e2_3_1 = makeEvidence(repo, id, "D-Script:FirewallIPInput.ds");
 	repo.InsertLink(id, g2_3_1, e2_3_1);
 
-	Goal g2_3_2 = makeGoal(repo, id, "FORWARDチェーンでパケットを破棄していない");
-	repo.InsertLink(id, s2_3, g2_3_2);
-	Evidence e2_3_2 = makeEvidence(repo, id, "D-Script:FirewallIPForward.ds");
-	repo.InsertLink(id, g2_3_2, e2_3_2);
+//	Goal g2_3_2 = makeGoal(repo, id, "FORWARDチェーンでパケットを破棄していない");
+//	repo.InsertLink(id, s2_3, g2_3_2);
+//	Evidence e2_3_2 = makeEvidence(repo, id, "D-Script:FirewallIPForward.ds");
+//	repo.InsertLink(id, g2_3_2, e2_3_2);
 
 	Goal g2_3_3 = makeGoal(repo, id, "OUTPUTチェーンでパケットを破棄していない");
 	repo.InsertLink(id, s2_3, g2_3_3);
@@ -123,7 +120,7 @@ void GenerateTree1(API repo) {
 	Goal g2_4 = makeGoal(repo, id, "firewall設定によりPOLICYでパケットが破棄されない");
 	repo.InsertLink(id, s2_1, g2_4);
 
-	Strategy s2_4 = makeStrategy(repo, id, "INPUT, FORWARD, OUTPUT別に確認する");
+	Strategy s2_4 = makeStrategy(repo, id, "INPUT, OUTPUT別に確認する");
 	repo.InsertLink(id, g2_4, s2_4);
 
 	Goal g2_4_1 = makeGoal(repo, id, "INPUTチェーンで基本的にパケットを破棄していない");
@@ -131,17 +128,17 @@ void GenerateTree1(API repo) {
 	Evidence e2_4_1 = makeEvidence(repo, id, "D-Script:FirewallPolicyInput.ds");
 	repo.InsertLink(id, g2_4_1, e2_4_1);
 
-	Goal g2_4_2 = makeGoal(repo, id, "FORWARDチェーンで基本的にパケットを破棄していない");
-	repo.InsertLink(id, s2_4, g2_4_2);
-	Evidence e2_4_2 = makeEvidence(repo, id, "D-Script:FirewallPolicyForward.ds");
-	repo.InsertLink(id, g2_4_2, e2_4_2);
+//	Goal g2_4_2 = makeGoal(repo, id, "FORWARDチェーンで基本的にパケットを破棄していない");
+//	repo.InsertLink(id, s2_4, g2_4_2);
+//	Evidence e2_4_2 = makeEvidence(repo, id, "D-Script:FirewallPolicyForward.ds");
+//	repo.InsertLink(id, g2_4_2, e2_4_2);
 
 	Goal g2_4_3 = makeGoal(repo, id, "OUTPUTチェーンで基本的にパケットを破棄していない");
 	repo.InsertLink(id, s2_4, g2_4_3);
 	Evidence e2_4_3 = makeEvidence(repo, id, "D-Script:FirewallPolicyOutput.ds");
 	repo.InsertLink(id, g2_4_3, e2_4_3);
 
-	Goal g3 = makeGoal(repo, id, "トランスポート層に障害要因がない");
+	Goal g3 = makeGoal(repo, id, "トランスポート層は障害要因ではない");
 	repo.InsertLink(id, s0 , g3);
 
 	Strategy s3 = makeStrategy(repo, id, "firewall設定を考慮する");
@@ -152,17 +149,17 @@ void GenerateTree1(API repo) {
 	Evidence e3_1 = makeEvidence(repo, id, "D-Script:FirewallTCPInput.ds");
 	repo.InsertLink(id, g3_1, e3_1);
 
-	Goal g3_2 = makeGoal(repo, id, "中継するTCPプロトコルのパケットを破棄しない");
-	repo.InsertLink(id, s3, g3_2);
-	Evidence e3_2 = makeEvidence(repo, id, "D-Script:FirewallTCPForward.ds");
-	repo.InsertLink(id, g3_2, e3_2);
+//	Goal g3_2 = makeGoal(repo, id, "中継するTCPプロトコルのパケットを破棄しない");
+//	repo.InsertLink(id, s3, g3_2);
+//	Evidence e3_2 = makeEvidence(repo, id, "D-Script:FirewallTCPForward.ds");
+//	repo.InsertLink(id, g3_2, e3_2);
 
 	Goal g3_3 = makeGoal(repo, id, "送信するTCPプロトコルのパケットを破棄しない");
 	repo.InsertLink(id, s3, g3_3);
 	Evidence e3_3 = makeEvidence(repo, id, "D-Script:FirewallTCPOutput.ds");
 	repo.InsertLink(id, g3_3, e3_3);
 
-	Goal g4 = makeGoal(repo, id, "アプリケーション層に障害要因がない");
+	Goal g4 = makeGoal(repo, id, "アプリケーション層は障害要因ではない");
 	repo.InsertLink(id, s0 , g4);
 
 	Strategy s4 = makeStrategy(repo, id, "サービス毎に考慮する");
@@ -173,57 +170,78 @@ void GenerateTree1(API repo) {
 	Evidence e4_1 = makeEvidence(repo, id, "D-Script:Nslookup.ds");
 	repo.InsertLink(id, g4_1, e4_1);
 
-	Goal g4_2 = makeGoal(repo, id, "FTP設定は間違っていない");
+	Goal g4_2 = makeGoal(repo, id, "メッセージ送受信が可能である");
 	repo.InsertLink(id, s4 , g4_2);
 
-	Strategy s4_2 = makeStrategy(repo, id, "コントロールコネクションの接続可否について議論する");
+	Strategy s4_2 = makeStrategy(repo, id, "サービス毎のポートについて議論する");
 	repo.InsertLink(id, g4_2, s4_2);
 
-	Goal g4_2_1 = makeGoal(repo, id, "firewall設定により21番ポートのINPUTパケットを破棄しない");
+	Goal g4_2_1 = makeGoal(repo, id, "firewall設定により10001番ポートのINPUTパケットを破棄しない");
 	repo.InsertLink(id, s4_2 , g4_2_1);
-	Evidence e4_2_1 = makeEvidence(repo, id, "D-Script:FirewallFTPInput.ds");
+	Evidence e4_2_1 = makeEvidence(repo, id, "D-Script:FirewallMSGInput.ds");
 	repo.InsertLink(id, g4_2_1, e4_2_1);
 
-	Goal g4_2_2 = makeGoal(repo, id, "firewall設定により21番ポートのFORWARDパケットを破棄しない");
-	repo.InsertLink(id, s4_2 , g4_2_2);
-	Evidence e4_2_2 = makeEvidence(repo, id, "D-Script:FirewallFTPForward.ds");
-	repo.InsertLink(id, g4_2_2, e4_2_2);
+//	Goal g4_2_2 = makeGoal(repo, id, "firewall設定により10001番ポートのFORWARDパケットを破棄しない");
+//	repo.InsertLink(id, s4_2 , g4_2_2);
+//	Evidence e4_2_2 = makeEvidence(repo, id, "D-Script:FirewallMSGForward.ds");
+//	repo.InsertLink(id, g4_2_2, e4_2_2);
 
-	Goal g4_2_3 = makeGoal(repo, id, "firewall設定により21番ポートのOUTPUTパケットを破棄しない");
+	Goal g4_2_3 = makeGoal(repo, id, "firewall設定により10001番ポートのOUTPUTパケットを破棄しない");
 	repo.InsertLink(id, s4_2 , g4_2_3);
-	Evidence e4_2_3 = makeEvidence(repo, id, "D-Script:FirewallFTPOutput.ds");
+	Evidence e4_2_3 = makeEvidence(repo, id, "D-Script:FirewallMSGOutput.ds");
 	repo.InsertLink(id, g4_2_3, e4_2_3);
 
-	Goal g4_2_4 = makeGoal(repo, id, "ユーザ名、パスワードが間違っていない");
-	repo.InsertLink(id, s4_2 , g4_2_4);
-	Evidence e4_2_4 = makeEvidence(repo, id, "ユーザの確認結果");
-	repo.InsertLink(id, g4_2_4, e4_2_4);
-
-	Strategy s4_3 = makeStrategy(repo, id, "データコネクションの接続可否について議論する");
-	repo.InsertLink(id, g4_2, s4_3);
-
-	Goal g4_3_1 = makeGoal(repo, id, "firewall設定によりデータ転送に使用するポートのINPUTパケットを破棄しない");
-	repo.InsertLink(id, s4_3 , g4_3_1);
-	Evidence e4_3_1 = makeEvidence(repo, id, "D-Script:FirewallFTPDataInput.ds");
-	repo.InsertLink(id, g4_3_1, e4_3_1);
-
-	Goal g4_3_2 = makeGoal(repo, id, "firewall設定によりデータ転送に使用するポートのFORWARDパケットを破棄しない");
-	repo.InsertLink(id, s4_3 , g4_3_2);
-	Evidence e4_3_2 = makeEvidence(repo, id, "D-Script:FirewallDataForward.ds");
-	repo.InsertLink(id, g4_3_2, e4_3_2);
-
-	Goal g4_3_3 = makeGoal(repo, id, "firewall設定によりデータ転送に使用するポートのOUTPUTパケットを破棄しない");
-	repo.InsertLink(id, s4_3 , g4_3_3);
-	Evidence e4_3_3 = makeEvidence(repo, id, "D-Script:FirewallFTPDataOutput.ds");
-	repo.InsertLink(id, g4_3_3, e4_3_3);
-
-	Strategy s4_4 = makeStrategy(repo, id, "FTP設定について議論する");
-	repo.InsertLink(id, g4_2, s4_4);
-
-	Goal g4_4_1 = makeGoal(repo, id, "匿名で接続できる設定になっている");
-	repo.InsertLink(id, s4_4 , g4_4_1);
-	Evidence e4_4_1 = makeEvidence(repo, id, "D-Script:CheckAnonConf.ds");
-	repo.InsertLink(id, g4_4_1, e4_4_1);
+//	Goal g4_2 = makeGoal(repo, id, "FTP設定は間違っていない");
+//	repo.InsertLink(id, s4 , g4_2);
+//
+//	Strategy s4_2 = makeStrategy(repo, id, "コントロールコネクションの接続可否について議論する");
+//	repo.InsertLink(id, g4_2, s4_2);
+//
+//	Goal g4_2_1 = makeGoal(repo, id, "firewall設定により21番ポートのINPUTパケットを破棄しない");
+//	repo.InsertLink(id, s4_2 , g4_2_1);
+//	Evidence e4_2_1 = makeEvidence(repo, id, "D-Script:FirewallFTPInput.ds");
+//	repo.InsertLink(id, g4_2_1, e4_2_1);
+//
+//	Goal g4_2_2 = makeGoal(repo, id, "firewall設定により21番ポートのFORWARDパケットを破棄しない");
+//	repo.InsertLink(id, s4_2 , g4_2_2);
+//	Evidence e4_2_2 = makeEvidence(repo, id, "D-Script:FirewallFTPForward.ds");
+//	repo.InsertLink(id, g4_2_2, e4_2_2);
+//
+//	Goal g4_2_3 = makeGoal(repo, id, "firewall設定により21番ポートのOUTPUTパケットを破棄しない");
+//	repo.InsertLink(id, s4_2 , g4_2_3);
+//	Evidence e4_2_3 = makeEvidence(repo, id, "D-Script:FirewallFTPOutput.ds");
+//	repo.InsertLink(id, g4_2_3, e4_2_3);
+//
+//	Goal g4_2_4 = makeGoal(repo, id, "ユーザ名、パスワードが間違っていない");
+//	repo.InsertLink(id, s4_2 , g4_2_4);
+//	Evidence e4_2_4 = makeEvidence(repo, id, "ユーザの確認結果");
+//	repo.InsertLink(id, g4_2_4, e4_2_4);
+//
+//	Strategy s4_3 = makeStrategy(repo, id, "データコネクションの接続可否について議論する");
+//	repo.InsertLink(id, g4_2, s4_3);
+//
+//	Goal g4_3_1 = makeGoal(repo, id, "firewall設定によりデータ転送に使用するポートのINPUTパケットを破棄しない");
+//	repo.InsertLink(id, s4_3 , g4_3_1);
+//	Evidence e4_3_1 = makeEvidence(repo, id, "D-Script:FirewallFTPDataInput.ds");
+//	repo.InsertLink(id, g4_3_1, e4_3_1);
+//
+//	Goal g4_3_2 = makeGoal(repo, id, "firewall設定によりデータ転送に使用するポートのFORWARDパケットを破棄しない");
+//	repo.InsertLink(id, s4_3 , g4_3_2);
+//	Evidence e4_3_2 = makeEvidence(repo, id, "D-Script:FirewallDataForward.ds");
+//	repo.InsertLink(id, g4_3_2, e4_3_2);
+//
+//	Goal g4_3_3 = makeGoal(repo, id, "firewall設定によりデータ転送に使用するポートのOUTPUTパケットを破棄しない");
+//	repo.InsertLink(id, s4_3 , g4_3_3);
+//	Evidence e4_3_3 = makeEvidence(repo, id, "D-Script:FirewallFTPDataOutput.ds");
+//	repo.InsertLink(id, g4_3_3, e4_3_3);
+//
+//	Strategy s4_4 = makeStrategy(repo, id, "FTP設定について議論する");
+//	repo.InsertLink(id, g4_2, s4_4);
+//
+//	Goal g4_4_1 = makeGoal(repo, id, "匿名で接続できる設定になっている");
+//	repo.InsertLink(id, s4_4 , g4_4_1);
+//	Evidence e4_4_1 = makeEvidence(repo, id, "D-Script:CheckAnonConf.ds");
+//	repo.InsertLink(id, g4_4_1, e4_4_1);
 
 //	System.p(repo.GetArgument(id).toJson());
 	System.p(repo.GetArgumentIds());
@@ -958,14 +976,14 @@ void FirewallFTPInput(API repo) {
 	System.p(repo.GetArgumentIds());
 }
 
-void FirewallFTPForward(API repo) {
+void FirewallMSGForward(API repo) {
 	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
 	int id = argument.argument_id;
 
 	DBNode root = repo.GetArgument(id).GetRoot();
 
 	Json json = new Json();
-	json.setString("D-Script","FirewallFTPForward.ds");
+	json.setString("D-Script","FirewallMSGForward.ds");
 	repo.AddContext(id, root.node_id, json);
 
 	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
@@ -1000,14 +1018,14 @@ void FirewallFTPForward(API repo) {
 	System.p(repo.GetArgumentIds());
 }
 
-void FirewallFTPOutput(API repo) {
+void FirewallMSGOutput(API repo) {
 	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
 	int id = argument.argument_id;
 
 	DBNode root = repo.GetArgument(id).GetRoot();
 
 	Json json = new Json();
-	json.setString("D-Script","FirewallFTPOutput.ds");
+	json.setString("D-Script","FirewallMSGOutput.ds");
 	repo.AddContext(id, root.node_id, json);
 
 	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
@@ -1042,173 +1060,173 @@ void FirewallFTPOutput(API repo) {
 	System.p(repo.GetArgumentIds());
 }
 
-void FirewallFTPDataInput(API repo) {
-	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
-	int id = argument.argument_id;
+//void FirewallFTPDataInput(API repo) {
+//	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
+//	int id = argument.argument_id;
+//
+//	DBNode root = repo.GetArgument(id).GetRoot();
+//
+//	Json json = new Json();
+//	json.setString("D-Script","FirewallFTPDataInput.ds");
+//	repo.AddContext(id, root.node_id, json);
+//
+//	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
+//	repo.InsertLink(id, root, s1);
+//
+//	Goal g1_1 = makeGoal(repo, id, "bashコマンドの実行結果を文字列に保持することができる");
+//	repo.InsertLink(id, s1, g1_1);
+//
+//	Goal g1_2 = makeGoal(repo, id, "sudoコマンドを使用できる");
+//	repo.InsertLink(id, s1, g1_2);
+//
+//	Goal g1_3 = makeGoal(repo, id, "iptablesコマンドは/sbin/に格納されている");
+//	repo.InsertLink(id, s1, g1_3);
+//
+//	Goal g1_4 = makeGoal(repo, id, "文字列が空になる時のエラー処理を書いている");
+//	repo.InsertLink(id, s1, g1_3);
+//
+//	Strategy s2 = makeStrategy(repo, id, "スクリプトの実行環境について議論する");
+//	repo.InsertLink(id, root, s2);
+//
+//	Goal g2_1 = makeGoal(repo, id, "iptablesがインストールされている");
+//	repo.InsertLink(id, s2, g2_1);
+//
+//	Evidence e3_1 = makeEvidence(repo, id, "人による確認");
+//	repo.InsertLink(id, g1_1, e3_1);
+//	repo.InsertLink(id, g1_2, e3_1);
+//	repo.InsertLink(id, g1_3, e3_1);
+//	repo.InsertLink(id, g1_4, e3_1);
+//	repo.InsertLink(id, g2_1, e3_1);
+//
+////	System.p(repo.GetArgument(id).toJson());
+//	System.p(repo.GetArgumentIds());
+//}
+//
+//void FirewallFTPDataForward(API repo) {
+//	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
+//	int id = argument.argument_id;
+//
+//	DBNode root = repo.GetArgument(id).GetRoot();
+//
+//	Json json = new Json();
+//	json.setString("D-Script","FirewallFTPDataForward.ds");
+//	repo.AddContext(id, root.node_id, json);
+//
+//	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
+//	repo.InsertLink(id, root, s1);
+//
+//	Goal g1_1 = makeGoal(repo, id, "bashコマンドの実行結果を文字列に保持することができる");
+//	repo.InsertLink(id, s1, g1_1);
+//
+//	Goal g1_2 = makeGoal(repo, id, "sudoコマンドを使用できる");
+//	repo.InsertLink(id, s1, g1_2);
+//
+//	Goal g1_3 = makeGoal(repo, id, "iptablesコマンドは/sbin/に格納されている");
+//	repo.InsertLink(id, s1, g1_3);
+//
+//	Goal g1_4 = makeGoal(repo, id, "文字列が空になる時のエラー処理を書いている");
+//	repo.InsertLink(id, s1, g1_3);
+//
+//	Strategy s2 = makeStrategy(repo, id, "スクリプトの実行環境について議論する");
+//	repo.InsertLink(id, root, s2);
+//
+//	Goal g2_1 = makeGoal(repo, id, "iptablesがインストールされている");
+//	repo.InsertLink(id, s2, g2_1);
+//
+//	Evidence e3_1 = makeEvidence(repo, id, "人による確認");
+//	repo.InsertLink(id, g1_1, e3_1);
+//	repo.InsertLink(id, g1_2, e3_1);
+//	repo.InsertLink(id, g1_3, e3_1);
+//	repo.InsertLink(id, g1_4, e3_1);
+//	repo.InsertLink(id, g2_1, e3_1);
+//
+////	System.p(repo.GetArgument(id).toJson());
+//	System.p(repo.GetArgumentIds());
+//}
+//
+//void FirewallFTPDataOutput(API repo) {
+//	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
+//	int id = argument.argument_id;
+//
+//	DBNode root = repo.GetArgument(id).GetRoot();
+//
+//	Json json = new Json();
+//	json.setString("D-Script","FirewallFTPDataOutput.ds");
+//	repo.AddContext(id, root.node_id, json);
+//
+//	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
+//	repo.InsertLink(id, root, s1);
+//
+//	Goal g1_1 = makeGoal(repo, id, "bashコマンドの実行結果を文字列に保持することができる");
+//	repo.InsertLink(id, s1, g1_1);
+//
+//	Goal g1_2 = makeGoal(repo, id, "sudoコマンドを使用できる");
+//	repo.InsertLink(id, s1, g1_2);
+//
+//	Goal g1_3 = makeGoal(repo, id, "iptablesコマンドは/sbin/に格納されている");
+//	repo.InsertLink(id, s1, g1_3);
+//
+//	Goal g1_4 = makeGoal(repo, id, "文字列が空になる時のエラー処理を書いている");
+//	repo.InsertLink(id, s1, g1_3);
+//
+//	Strategy s2 = makeStrategy(repo, id, "スクリプトの実行環境について議論する");
+//	repo.InsertLink(id, root, s2);
+//
+//	Goal g2_1 = makeGoal(repo, id, "iptablesがインストールされている");
+//	repo.InsertLink(id, s2, g2_1);
+//
+//	Evidence e3_1 = makeEvidence(repo, id, "人による確認");
+//	repo.InsertLink(id, g1_1, e3_1);
+//	repo.InsertLink(id, g1_2, e3_1);
+//	repo.InsertLink(id, g1_3, e3_1);
+//	repo.InsertLink(id, g1_4, e3_1);
+//	repo.InsertLink(id, g2_1, e3_1);
+//
+////	System.p(repo.GetArgument(id).toJson());
+//	System.p(repo.GetArgumentIds());
+//}
 
-	DBNode root = repo.GetArgument(id).GetRoot();
-
-	Json json = new Json();
-	json.setString("D-Script","FirewallFTPDataInput.ds");
-	repo.AddContext(id, root.node_id, json);
-
-	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
-	repo.InsertLink(id, root, s1);
-
-	Goal g1_1 = makeGoal(repo, id, "bashコマンドの実行結果を文字列に保持することができる");
-	repo.InsertLink(id, s1, g1_1);
-
-	Goal g1_2 = makeGoal(repo, id, "sudoコマンドを使用できる");
-	repo.InsertLink(id, s1, g1_2);
-
-	Goal g1_3 = makeGoal(repo, id, "iptablesコマンドは/sbin/に格納されている");
-	repo.InsertLink(id, s1, g1_3);
-
-	Goal g1_4 = makeGoal(repo, id, "文字列が空になる時のエラー処理を書いている");
-	repo.InsertLink(id, s1, g1_3);
-
-	Strategy s2 = makeStrategy(repo, id, "スクリプトの実行環境について議論する");
-	repo.InsertLink(id, root, s2);
-
-	Goal g2_1 = makeGoal(repo, id, "iptablesがインストールされている");
-	repo.InsertLink(id, s2, g2_1);
-
-	Evidence e3_1 = makeEvidence(repo, id, "人による確認");
-	repo.InsertLink(id, g1_1, e3_1);
-	repo.InsertLink(id, g1_2, e3_1);
-	repo.InsertLink(id, g1_3, e3_1);
-	repo.InsertLink(id, g1_4, e3_1);
-	repo.InsertLink(id, g2_1, e3_1);
-
-//	System.p(repo.GetArgument(id).toJson());
-	System.p(repo.GetArgumentIds());
-}
-
-void FirewallFTPDataForward(API repo) {
-	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
-	int id = argument.argument_id;
-
-	DBNode root = repo.GetArgument(id).GetRoot();
-
-	Json json = new Json();
-	json.setString("D-Script","FirewallFTPDataForward.ds");
-	repo.AddContext(id, root.node_id, json);
-
-	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
-	repo.InsertLink(id, root, s1);
-
-	Goal g1_1 = makeGoal(repo, id, "bashコマンドの実行結果を文字列に保持することができる");
-	repo.InsertLink(id, s1, g1_1);
-
-	Goal g1_2 = makeGoal(repo, id, "sudoコマンドを使用できる");
-	repo.InsertLink(id, s1, g1_2);
-
-	Goal g1_3 = makeGoal(repo, id, "iptablesコマンドは/sbin/に格納されている");
-	repo.InsertLink(id, s1, g1_3);
-
-	Goal g1_4 = makeGoal(repo, id, "文字列が空になる時のエラー処理を書いている");
-	repo.InsertLink(id, s1, g1_3);
-
-	Strategy s2 = makeStrategy(repo, id, "スクリプトの実行環境について議論する");
-	repo.InsertLink(id, root, s2);
-
-	Goal g2_1 = makeGoal(repo, id, "iptablesがインストールされている");
-	repo.InsertLink(id, s2, g2_1);
-
-	Evidence e3_1 = makeEvidence(repo, id, "人による確認");
-	repo.InsertLink(id, g1_1, e3_1);
-	repo.InsertLink(id, g1_2, e3_1);
-	repo.InsertLink(id, g1_3, e3_1);
-	repo.InsertLink(id, g1_4, e3_1);
-	repo.InsertLink(id, g2_1, e3_1);
-
-//	System.p(repo.GetArgument(id).toJson());
-	System.p(repo.GetArgumentIds());
-}
-
-void FirewallFTPDataOutput(API repo) {
-	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
-	int id = argument.argument_id;
-
-	DBNode root = repo.GetArgument(id).GetRoot();
-
-	Json json = new Json();
-	json.setString("D-Script","FirewallFTPDataOutput.ds");
-	repo.AddContext(id, root.node_id, json);
-
-	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
-	repo.InsertLink(id, root, s1);
-
-	Goal g1_1 = makeGoal(repo, id, "bashコマンドの実行結果を文字列に保持することができる");
-	repo.InsertLink(id, s1, g1_1);
-
-	Goal g1_2 = makeGoal(repo, id, "sudoコマンドを使用できる");
-	repo.InsertLink(id, s1, g1_2);
-
-	Goal g1_3 = makeGoal(repo, id, "iptablesコマンドは/sbin/に格納されている");
-	repo.InsertLink(id, s1, g1_3);
-
-	Goal g1_4 = makeGoal(repo, id, "文字列が空になる時のエラー処理を書いている");
-	repo.InsertLink(id, s1, g1_3);
-
-	Strategy s2 = makeStrategy(repo, id, "スクリプトの実行環境について議論する");
-	repo.InsertLink(id, root, s2);
-
-	Goal g2_1 = makeGoal(repo, id, "iptablesがインストールされている");
-	repo.InsertLink(id, s2, g2_1);
-
-	Evidence e3_1 = makeEvidence(repo, id, "人による確認");
-	repo.InsertLink(id, g1_1, e3_1);
-	repo.InsertLink(id, g1_2, e3_1);
-	repo.InsertLink(id, g1_3, e3_1);
-	repo.InsertLink(id, g1_4, e3_1);
-	repo.InsertLink(id, g2_1, e3_1);
-
-//	System.p(repo.GetArgument(id).toJson());
-	System.p(repo.GetArgumentIds());
-}
-
-void CheckAnonConf(API repo) {
-	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
-	int id = argument.argument_id;
-
-	DBNode root = repo.GetArgument(id).GetRoot();
-
-	Json json = new Json();
-	json.setString("D-Script","CheckAnonConf.ds");
-	repo.AddContext(id, root.node_id, json);
-
-	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
-	repo.InsertLink(id, root, s1);
-
-	Goal g1_1 = makeGoal(repo, id, "bashコマンドの実行結果を文字列に保持することができる");
-	repo.InsertLink(id, s1, g1_1);
-
-	Goal g1_2 = makeGoal(repo, id, "文字列が空になる時のエラー処理を書いている");
-	repo.InsertLink(id, s1, g1_2);
-
-	Strategy s2 = makeStrategy(repo, id, "スクリプトの実行環境について議論する");
-	repo.InsertLink(id, root, s2);
-
-	Goal g2_1 = makeGoal(repo, id, "vsftpdがインストールされている");
-	repo.InsertLink(id, s2, g2_1);
-
-	Goal g2_2 = makeGoal(repo, id, "vsftpd.confファイルが/etc/に保存されている");
-	repo.InsertLink(id, s2, g2_2);
-
-	Goal g2_3 = makeGoal(repo, id, "anonymous接続を有効にしている");
-	repo.InsertLink(id, s2, g2_3);
-
-	Evidence e3_1 = makeEvidence(repo, id, "人による確認");
-	repo.InsertLink(id, g1_1, e3_1);
-	repo.InsertLink(id, g1_2, e3_1);
-	repo.InsertLink(id, g2_1, e3_1);
-	repo.InsertLink(id, g2_2, e3_1);
-	repo.InsertLink(id, g2_3, e3_1);
-
-//	System.p(repo.GetArgument(id).toJson());
-	System.p(repo.GetArgumentIds());
-}
+//void CheckAnonConf(API repo) {
+//	DCaseArgument argument = repo.CreateArgument("スクリプトは正しく実行する");
+//	int id = argument.argument_id;
+//
+//	DBNode root = repo.GetArgument(id).GetRoot();
+//
+//	Json json = new Json();
+//	json.setString("D-Script","CheckAnonConf.ds");
+//	repo.AddContext(id, root.node_id, json);
+//
+//	Strategy s1 = makeStrategy(repo, id, "スクリプトのバグとなりうる要因を議論する");
+//	repo.InsertLink(id, root, s1);
+//
+//	Goal g1_1 = makeGoal(repo, id, "bashコマンドの実行結果を文字列に保持することができる");
+//	repo.InsertLink(id, s1, g1_1);
+//
+//	Goal g1_2 = makeGoal(repo, id, "文字列が空になる時のエラー処理を書いている");
+//	repo.InsertLink(id, s1, g1_2);
+//
+//	Strategy s2 = makeStrategy(repo, id, "スクリプトの実行環境について議論する");
+//	repo.InsertLink(id, root, s2);
+//
+//	Goal g2_1 = makeGoal(repo, id, "vsftpdがインストールされている");
+//	repo.InsertLink(id, s2, g2_1);
+//
+//	Goal g2_2 = makeGoal(repo, id, "vsftpd.confファイルが/etc/に保存されている");
+//	repo.InsertLink(id, s2, g2_2);
+//
+//	Goal g2_3 = makeGoal(repo, id, "anonymous接続を有効にしている");
+//	repo.InsertLink(id, s2, g2_3);
+//
+//	Evidence e3_1 = makeEvidence(repo, id, "人による確認");
+//	repo.InsertLink(id, g1_1, e3_1);
+//	repo.InsertLink(id, g1_2, e3_1);
+//	repo.InsertLink(id, g2_1, e3_1);
+//	repo.InsertLink(id, g2_2, e3_1);
+//	repo.InsertLink(id, g2_3, e3_1);
+//
+////	System.p(repo.GetArgument(id).toJson());
+//	System.p(repo.GetArgumentIds());
+//}
 
 void main() {
 	API repo = new API("dcasedb","dcasedb");
@@ -1231,13 +1249,12 @@ void main() {
 	FirewallTCPForward(repo);
 	FirewallTCPOutput(repo);
 	Nslookup(repo);
-	FirewallIPInput(repo);
-	FirewallFTPForward(repo);
-	FirewallFTPOutput(repo);
-	FirewallFTPDataInput(repo);
-	FirewallFTPDataForward(repo);
-	FirewallFTPDataOutput(repo);
-	CheckAnonConf(repo);
+//	FirewallFTPForward(repo);
+//	FirewallFTPOutput(repo);
+//	FirewallFTPDataInput(repo);
+//	FirewallFTPDataForward(repo);
+//	FirewallFTPDataOutput(repo);
+//	CheckAnonConf(repo);
 }
 
 main();

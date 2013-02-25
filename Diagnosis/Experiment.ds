@@ -102,9 +102,9 @@ boolean Evidences(Json ctx) {
 
 void main() {
 	Json ctx = new Json();
-	ctx.setString("hostname", SCRIPT_ARGV.get(1));
+//	ctx.setString("hostname", SCRIPT_ARGV.get(1));
 //	ctx.setString("hostname", "www.google.com");
-//	ctx.setString("hostname", "test");
+	ctx.setString("hostname", "test");
 	Evidences(ctx);
 }
 

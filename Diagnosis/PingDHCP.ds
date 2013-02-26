@@ -1,0 +1,20 @@
+// written by Joseph
+
+import("Syntax.ShellStyle");
+import("Type.Json");
+
+boolean PingDHCP(Json ctx) {
+	boolean ret = true;
+
+	ping 255.255.255.255 -c 2 > /dev/null;
+	ret = ($? == 0);
+	return ret;
+}
+
+void main() {
+	Json ctx = new Json();
+	System.p(PingDHCP(ctx));
+}
+
+main();
+

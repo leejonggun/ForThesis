@@ -479,7 +479,7 @@ function createSampleNode() {
 			{ name: "Context", type: "Context", desc: "@IP:192.168.59.75\n@OS:ubuntu12.04LTS 64bit\n"+
 			  "@Service:Connection\n@Topology:star\n@DEST:test\n@DEST-IP:192.168.59.40\n@OS:ubuntu12.10 64bit"
 			},
-			{ name: "Strategy", type: "Strategy", desc: "TCP/IP参照モデルを基に議論する",
+			{ name: "Strategy", type: "Strategy", desc: "TCP/IPを基に議論する",
 //				children: [
 //				{ name: "SubGoal", type: "Goal", desc: "サーバは障害要因ではない",
 			children: strategy_children1

@@ -50,11 +50,26 @@ void GenerateTree1(API repo) {
 	json.setString("@Port","10001");
 	repo.AddContext(id, root.node_id, json);
 
-	Strategy s0 = makeStrategy(repo, id, "TCP/IP参照モデルを基に議論する");
+	Strategy s0 = makeStrategy(repo, id, "TCP/IPを基に議論する");
+//	Strategy s0 = makeStrategy(repo, id, "管理ドメイン毎に分ける");
 	repo.InsertLink(id, root, s0);
 
 	Goal g1 = makeGoal(repo, id, "ネットワークインターフェース層は障害要因ではない");
 	repo.InsertLink(id, s0 , g1);
+
+	Json json_g1 = new Json();
+	json_g1.setString("@想定している障害","イーサネットカードが認識されない障害");
+//	json_g1.setString("@想定している障害","正しいネットワークドライバが");
+	json_g1.setString("@想定している障害","");
+	json_g1.setString("@Structure","x86-64");
+	json_g1.setString("@Port","10001");
+	json_g1.setString("@DEST","test");
+	json_g1.setString("@DEST-IP","192.168.59.40");
+	json_g1.setString("@OS","ubuntu12.04");
+	json_g1.setString("@Version","3.2.0-37-generic");
+	json_g1.setString("@Structure","x86-64");
+	json_g1.setString("@Port","10001");
+	repo.AddContext(id, root.node_id, json);
 
 	Strategy s1 = makeStrategy(repo, id, "PCや周辺機器の状態により議論する");
 	repo.InsertLink(id, g1 , s1);
@@ -77,12 +92,14 @@ void GenerateTree1(API repo) {
 	Goal g1_4 = makeGoal(repo, id, "イーサネットインターフェースが有効になっている");
 	repo.InsertLink(id, s1, g1_4);
 	Evidence e1_4 = makeEvidence(repo, id, "D-Script:Connection.ds");
+//	Evidence e1_4 = makeEvidence(repo, id, "インターフェースが有効かどうかをチェックする");
 	repo.InsertLink(id, g1_4, e1_4);
 
 	Goal g2 = makeGoal(repo, id, "インターネット層は障害要因ではない");
+//	Goal g2 = makeGoal(repo, id, "IP層は障害要因ではない");
 	repo.InsertLink(id, s0 , g2);
 
-	Strategy s2_1 = makeStrategy(repo, id, "インターネット層の持つ役割を基に議論する");
+	Strategy s2_1 = makeStrategy(repo, id, "IP層の持つ役割を基に議論する");
 	repo.InsertLink(id, g2 , s2_1);
 
 	Goal g2_1 = makeGoal(repo, id, "IPアドレスが割り当てられている");

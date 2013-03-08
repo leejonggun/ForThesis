@@ -29,6 +29,7 @@ String Get_ipaddress() {
 boolean Check_Detail(Json ctx, String rules) {
 	boolean ret; int i;
 	String IP = Get_ipaddress();
+	System.p(IP);
 	String Server = ctx.getString("hostname");
 	String[] src = [IP, "0.0.0.0/0"];//The Packet is from Server to Client because this is OUTPUT Chain
 	String[] dest = [Server, "0.0.0.0/0"];
@@ -125,6 +126,8 @@ boolean FirewallPolicyInput(Json ctx) {
 }
 
 void main() {
+	String IP = Get_ipaddress();
+	System.p(IP);
 	Json ctx = new Json();
 	ctx.setString("hostname", SCRIPT_ARGV.get(1));
 	ctx.setString("Service_srcPort", "spt:10001");//Service name is 10001

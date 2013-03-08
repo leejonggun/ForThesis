@@ -38,16 +38,16 @@ void GenerateTree1(API repo) {
 
 	Json json = new Json();
 	json.setString("@HOST-IP","192.168.59.75");
-	json.setString("@OS","ubuntu12.10");
-	json.setString("@Version","3.2.0-37-generic");
-	json.setString("@Structure","x86-64");
-	json.setString("@Port","10001");
+	json.setString("@HOST-OS","ubuntu12.10");
+	json.setString("@HOST-Version","3.2.0-37-generic");
+	json.setString("@HOST-Structure","x86-64");
+	json.setString("@HOST-Port","10001");
 	json.setString("@DEST","test");
 	json.setString("@DEST-IP","192.168.59.40");
-	json.setString("@OS","ubuntu12.04");
-	json.setString("@Version","3.2.0-37-generic");
-	json.setString("@Structure","x86-64");
-	json.setString("@Port","10001");
+	json.setString("@DEST-OS","ubuntu12.04");
+	json.setString("@DEST-Version","3.2.0-37-generic");
+	json.setString("@DEST-Structure","x86-64");
+	json.setString("@DEST-Port","10001");
 	repo.AddContext(id, root.node_id, json);
 
 	Strategy s0 = makeStrategy(repo, id, "TCP/IPを基に議論する");

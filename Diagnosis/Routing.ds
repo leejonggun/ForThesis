@@ -17,6 +17,10 @@ boolean Routing(Json ctx) {
 	String getIP = gethostip.slice(0, gethostip.lastIndexOf("."));
 
 	String Rtable = $(/bin/netstat -rn | grep "${getIP}");
+	if (Rtable == "") {
+		return false;
+	}
+
 	routable = Rtable.search(getIP);
 	if (routable >= 0) {
 		return true;

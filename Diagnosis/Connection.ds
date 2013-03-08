@@ -13,8 +13,10 @@ String[] Get_interfaceNipaddress() {
 	while (i < ifconfigs.getLength() - 1) {
 		ifconfig = ifconfigs[i].split(" ");
 		if (ifconfig[7].split(":").get(0) == "addr") {//addr:192.168.59.80 or others
+			if (ifconfig[0] != "virbr0") {//virbr0 is a VM interface. Not valid.
 			valid_iface = valid_iface.concat(" "+ifconfig[0]+" ");//interface name
 			valid_iface = valid_iface.concat(ifconfig[7].split(":").get(1));//IP Address
+			}
 		}
 		i = i + 1;
 	}
@@ -45,7 +47,9 @@ boolean Connection(Json ctx) {
 	boolean ret = true;
 
 	String[] iface_ip = Get_interfaceNipaddress();
-//	System.p(iface_ip);
+	if (iface_ip.getLength() == 1) {
+		return false;
+	}
 
 	ret = Match_correct_iface(iface_ip);
 

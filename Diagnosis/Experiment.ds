@@ -62,13 +62,13 @@ boolean Evidences(Json ctx) {
 		System.p(result);
 	}
 
-	result = $(sudo /usr/local/bin/konoha FirewallMSGInput.ds);
+	result = $(sudo /usr/local/bin/konoha FirewallServiceInput.ds);
 	System.p(result);
 
-//	result = $(sudo /usr/local/bin/konoha FirewallMSGForward.ds);
+//	result = $(sudo /usr/local/bin/konoha FirewallServiceForward.ds);
 //	System.p(result);
 
-	result = $(sudo /usr/local/bin/konoha FirewallMSGOutput.ds);
+	result = $(sudo /usr/local/bin/konoha FirewallServiceOutput.ds);
 	System.p(result);
 
 //	result = $(sudo /usr/local/bin/konoha FirewallFTPInput.ds);

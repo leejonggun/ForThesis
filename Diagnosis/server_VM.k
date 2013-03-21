@@ -8,7 +8,7 @@ Import("cstyle");
 
 void test() {
 //	destination
-	String srcIP = "192.168.59.75";
+	String srcIP = "192.168.2.102";
 	System.p(srcIP);
 	int srcPort = 10001;
 	int srcFamily = AF_INET;
@@ -27,7 +27,7 @@ void test() {
 //	socket listen(System.listen())
 	ret = System.listen(sockfd, SOMAXCONN);
 
-	int accpetfd = 0;
+	int acceptfd = 0;
 	while (true) {
 		System.p("Preparing to accept...");
 		acceptfd = System.accept(sockfd, remoteInfo);

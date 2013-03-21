@@ -1,0 +1,24 @@
+//written by Joseph
+/*
+	 このドキュメントは実験環境をマシン毎に構築するための手順です。
+	 通信可能であるかどうかを診断する実験なので、最低でも2台のPCが必要です。
+	 診断できる環境は Linux OS の場合のみです。
+	 */
+
+1. https://github.com/leejonggun/ForThesis.git をクローンする。(この中の Diagnosis ディレクトリにスクリプトが入っている。)
+2. 別のディレクトリに https://github.com/leejonggun/minikonoha.git をクローンして dscript ブランチに checkout する。
+3. dscript ブランチの src/package-devel/posix.socket/socket_glue.c を編集する。
+   170	char diagcmd[BUF] = "sudo konoha /home/joseph/workspace/ForThesis/Diagnosis/Experiment.ds ";
+   上記の診断する diagcmd にExperiment.dsがあるパスを指定する。(決め打ちで診断スクリプトを実行させるスクリプトを実行させている)
+4. 手順3.でdiagcmdを変えた上でkonohaをbuildする。
+5. 接続先のマシン(サーバ)で ForThesis/Diagnosis にある server_VM.k を実行させておいて、
+   接続を試みるマシン(クライアント)で client_VM.k を実行すると通信が確立され、メッセージが送信される。
+6. フォルトを挿入してクライアントで client_VM.k を実行するとエラーが置き、diagcmd で指定した Experiment.ds が実行される。
+   ex)ワイヤレス接続やイーサネット接続を切断し、client_VM.k を実行するとサーバと接続ができないので、診断スクリプトが実行される。
+
+注意事項
+	接続を可能にするためにサーバにある server_VM.k とクライアントにある client_VM.k に以下の条件が必要である。
+	逆に言うと、ここの条件をどれか満たさない場合、接続は失敗する。
+1. client_VM.k にある dstIP はサーバのIP Addressを指定し、server_VM.k にある srcIP と一致する必要があります。
+2. client_VM.k にある dstPort はクライアントのパケットを送るポートを指定し、server_VM.k にある srcPort と一致する必要があります。
+3. その他、client_VM.k にある dstFamily, dstType, dstOPT や、server_VM.k にある srcFamily, srcType, srcOPT はそれぞれ一致する必要があります。

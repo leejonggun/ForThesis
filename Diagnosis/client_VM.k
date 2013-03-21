@@ -29,10 +29,7 @@ void test() {
 			ret = System.connect(sockfd, dstIP, dstPort, dstFamily);
 			i = 0;
 		}
-//	rebind System.sendto() function
-//	It's possible to use write, read function.
 		ret = System.write(sockfd, msg);
-//		ret = System.send(sockfd, msg, 0);
 		System.p(ret);
 		System.p("Sent a message to the server");
 		System.sleep(1);

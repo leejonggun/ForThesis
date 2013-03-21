@@ -32,8 +32,6 @@ void test() {
 		System.p("Preparing to accept...");
 		acceptfd = System.accept(sockfd, remoteInfo);
 
-//		ret = System.recv(sockfd, msgfrom, 0);
-//		ret = System.read(sockfd);//error
 		ret = System.read(acceptfd);
 		System.p(ret);
 	}

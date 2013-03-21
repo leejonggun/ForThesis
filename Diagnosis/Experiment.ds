@@ -16,7 +16,7 @@ boolean Evidences(Json ctx) {
 	result = $(/usr/local/bin/konoha CheckMOD.ds);
 	System.p(result);
 
-	result = $(/usr/local/bin/konoha Connection.ds);
+	result = $(/usr/local/bin/konoha CheckIface.ds);
 	System.p(result);
 
 	result = $(/usr/local/bin/konoha CheckIPAddress.ds);
